@@ -1,51 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Socket from "./Socket";
-import Login from "./Login";
-import Signup from "./Signup";
+import './App.css';
+import LoginScreen from "./LoginScreen";
 import Logout from "./Logout";
 
 class App extends Component {
-  displayHomepage = () => {
-    return (
-      <>
-        <div style={{ padding: "20px" }}>
-          <Login />
-        </div>
-        <div style={{ padding: "20px" }}>
-          <Signup />
-        </div>
-      </>
-    );
-  };
-
-  displayLogout = () => {
-    return (
-      <>
-        <div style={{ padding: "20px" }}>
-          <h1>Hello {this.props.username}</h1>
-          <Logout />
-        </div>
-      </>
-    );
-  };
-
+  constructor(props){
+    super(props);
+    this.state={
+      loginPage:[],
+      uploadScreen:[]
+    }
+  }
+  componentWillMount(){
+    var loginPage =[];
+    loginPage.push(<LoginScreen parentContext={this}/>);
+    this.setState({
+                  loginPage:loginPage
+                    })
+  }
   render() {
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {this.props.isLogin === true
-          ? this.displayLogout()
-          : this.displayHomepage()}
+      <div className="App">
+        {this.state.loginPage}
+        {this.state.uploadScreen}
       </div>
     );
   }
 }
+const style = {
+  margin: 15,
+};
 
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username,
-    color: state.color
+    username: state.username
   };
 };
 
