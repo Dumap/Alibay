@@ -62,8 +62,7 @@ io.on("connection", function(socket) {
           if (result.length !== 0 && userInfo.pwd === result[0].pwd) {
             socket.emit("login-success", {
               success: true,
-              username: result[0].user,
-              color: result[0].color
+              username: result[0].user
             });
           } else {
             socket.emit("login-success", false);
@@ -80,7 +79,6 @@ io.on("connection", function(socket) {
         user: userInfo.user,
         msg: " has logged out."
       };
-      addNewMessage(socket, dbo, newMsg);
       db.close();
     });
   });
