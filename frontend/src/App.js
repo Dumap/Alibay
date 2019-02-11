@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Socket from "./Socket";
 import Login from "./Login";
 import Signup from "./Signup";
+import Logout from "./Logout";
 
 class App extends Component {
   displayHomepage = () => {
@@ -21,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        {this.props.isLogin === true ? "Bonjour" : this.displayHomepage()}
+        {this.props.isLogin === true ? <Logout /> : this.displayHomepage()}
       </div>
     );
   }
