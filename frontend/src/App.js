@@ -1,28 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Socket from "./Socket";
+import Login from "./Login";
+import Signup from "./Signup";
 
 class App extends Component {
+  displayHomepage = () => {
+    return (
+      <>
+        <div style={{ padding: "20px" }}>
+          <Login />
+        </div>
+        <div style={{ padding: "20px" }}>
+          <Signup />
+        </div>
+      </>
+    );
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {this.props.isLogin === true ? "Bonjour" : this.displayHomepage()}
       </div>
     );
   }
 }
 
-export default App;
+let mapStateToProps = function(state) {
+  return {
+    isLogin: state.isLogin,
+    username: state.username,
+    color: state.color
+  };
+};
+
+let connectApp = connect(mapStateToProps)(App);
+
+export default connectApp;
