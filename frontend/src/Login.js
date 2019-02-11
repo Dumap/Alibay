@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Socket from "./Socket";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import AppBar from "material-ui/AppBar";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
-constructor(props){
-  super(props);
-  this.state={
-    username:'',
-    password:''
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
   }
- }
- handleUsernameChange = event => {
+  handleUsernameChange = event => {
     this.setState({ username: event.target.value });
   };
 
@@ -30,57 +31,67 @@ constructor(props){
       pwd: this.state.password
     });
     Socket.on("login-success", res => {
+      console.log("res", res);
       if (res.success === true) {
+        console.log("if yes");
         this.props.dispatch({
           type: "login",
           username: res.username
         });
+        this.props.history.push("/");
       } else {
+        console.log("if nope");
         alert("Wrong password or username.");
+        this.setState({ username: "", password: "" });
       }
     });
-    this.setState({ username: "", password: "" });
   };
-render() {
+  render() {
     return (
       <div>
         <MuiThemeProvider>
           <div>
-          <AppBar
-             title="Login"
-           />
-           <TextField
-             hintText="Enter your Username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
-             />
-           <br/>
-             <TextField
-               type="password"
-               hintText="Enter your Password"
-               floatingLabelText="Password"
-               onChange = {(event,newValue) => this.setState({password:newValue})}
-               />
-             <br/>
-             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleSubmit(event)}/>
-         </div>
-         </MuiThemeProvider>
+            <AppBar title="Login" />
+            <TextField
+              hintText="Enter your Username"
+              floatingLabelText="Username"
+              onChange={(event, newValue) =>
+                this.setState({ username: newValue })
+              }
+            />
+            <br />
+            <TextField
+              type="password"
+              hintText="Enter your Password"
+              floatingLabelText="Password"
+              onChange={(event, newValue) =>
+                this.setState({ password: newValue })
+              }
+            />
+            <br />
+            <RaisedButton
+              label="Submit"
+              primary={true}
+              style={style}
+              onClick={event => this.handleSubmit(event)}
+            />
+          </div>
+        </MuiThemeProvider>
       </div>
     );
   }
 }
 const style = {
- margin: 15,
+  margin: 15
 };
 
 let mapStateToProps = function(state) {
   return {
-      isLogin: state.isLogin,
-      username: state.username
+    isLogin: state.isLogin,
+    username: state.username
   };
 };
 
-let connectLogin = connect(mapStateToProps)(Login);
+let connectLogin = connect(mapStateToProps)(withRouter(Login));
 
 export default connectLogin;
-  

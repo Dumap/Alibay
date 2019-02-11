@@ -1,35 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import './App.css';
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import "./App.css";
 import LoginScreen from "./LoginScreen";
 import Logout from "./Logout";
+import Market from "./Market";
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      loginPage:[],
-      uploadScreen:[]
-    }
+    this.state = {};
   }
-  componentWillMount(){
-    var loginPage =[];
-    loginPage.push(<LoginScreen parentContext={this}/>);
-    this.setState({
-                  loginPage:loginPage
-                    })
-  }
+
+  renderHomepage = () => {
+    return <Market />;
+  };
+
+  renderLoginScreen = () => {
+    return <LoginScreen />;
+  };
+
   render() {
     return (
-      <div className="App">
-        {this.state.loginPage}
-        {this.state.uploadScreen}
-      </div>
+      <BrowserRouter>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
+          <Route exact path="/" render={this.renderHomepage} />
+          <Route exact path="/loginscreen" render={this.renderLoginScreen} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
+
 const style = {
-  margin: 15,
+  margin: 15
 };
 
 let mapStateToProps = function(state) {

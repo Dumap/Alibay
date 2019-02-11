@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import App from "./App";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
@@ -14,6 +15,8 @@ let reducer = function(state, action) {
       };
     case "logout":
       return { ...state, isLogin: false, username: "" };
+    case "modify-items":
+      return { ...state, items: action.items };
 
     default:
       return state;
@@ -22,7 +25,7 @@ let reducer = function(state, action) {
 
 const myStore = createStore(
   reducer,
-  { isLogin: false, username: "" },
+  { isLogin: false, username: "", items: [] },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
