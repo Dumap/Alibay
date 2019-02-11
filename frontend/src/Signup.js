@@ -20,13 +20,9 @@ class Signup extends Component {
     console.log("in Signup handleSubmit");
     event.preventDefault();
 
-    let color = ["#ff0000", "#0000ff", "#00cc00", "#cc00ff", "#ff9900"];
-    let dice = Math.floor(Math.random() * 5);
-
     Socket.emit("signup", {
       user: this.state.username,
-      pwd: this.state.password,
-      color: color[dice]
+      pwd: this.state.password
     });
     Socket.on("signup-success", res => {
       if (res.success === true) {
@@ -71,8 +67,7 @@ class Signup extends Component {
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username,
-    color: state.color
+    username: state.username
   };
 };
 

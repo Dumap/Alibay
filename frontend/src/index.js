@@ -10,11 +10,10 @@ let reducer = function(state, action) {
       return {
         ...state,
         isLogin: true,
-        username: action.username,
-        color: action.color
+        username: action.username
       };
     case "logout":
-      return { ...state, isLogin: false, username: "", color: "" };
+      return { ...state, isLogin: false, username: "" };
 
     default:
       return state;
@@ -23,7 +22,7 @@ let reducer = function(state, action) {
 
 const myStore = createStore(
   reducer,
-  { isLogin: false, username: "", color: "" },
+  { isLogin: false, username: "" },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

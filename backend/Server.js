@@ -21,25 +21,6 @@ io.origins("*:*");
 
 let sessions = [];
 
-// let displayMessages = function(socket) {
-//   MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
-//     if (err) throw err;
-//     let dbo = db.db(DB_NAME);
-//     dbo
-//       .collection(DB_COLLECTION_MSG)
-//       .find({})
-//       .toArray((err, result) => {
-//         if (err) throw err;
-//         console.log(result);
-//         socket.emit("send-messages", { success: true, chat: result.reverse() });
-//       });
-//   });
-// };
-// let addNewMessage = function(socket, dbo, msgInfo) {
-//   dbo.collection(DB_COLLECTION_MSG).insertOne(msgInfo, (err, result) => {
-//     if (err) throw err;
-//   });
-// };
 let getUser = function(socket, dbo, userInfo) {};
 let setUser = function(socket, dbo, userInfo) {
   dbo.collection(DB_COLLECTION_PWD).insertOne(userInfo, (err, result) => {
@@ -79,11 +60,6 @@ io.on("connection", function(socket) {
         .toArray((err, result) => {
           if (err) throw err;
           if (result.length !== 0 && userInfo.pwd === result[0].pwd) {
-            // let newMsg = {
-            //   user: userInfo.user,
-            //   msg: " has logged in."
-            // };
-            // addNewMessage(socket, dbo, newMsg);
             socket.emit("login-success", {
               success: true,
               username: result[0].user,
@@ -108,18 +84,6 @@ io.on("connection", function(socket) {
       db.close();
     });
   });
-  //   socket.on("newmessage", newMessage => {
-  //     console.log("in socket newmessage", newMessage);
-  //     MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
-  //       if (err) throw err;
-  //       let dbo = db.db(DB_NAME);
-  //       addNewMessage(socket, dbo, newMessage);
-  //       db.close();
-  //     });
-  //   });
-  //   socket.on("ask-messages", () => {
-  //     displayMessages(socket);
-  //   });
 });
 
 io.listen(4000);

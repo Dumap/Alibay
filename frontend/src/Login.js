@@ -27,8 +27,7 @@ class Login extends Component {
       if (res.success === true) {
         this.props.dispatch({
           type: "login",
-          username: res.username,
-          color: res.color
+          username: res.username
         });
       } else {
         alert("Wrong password or username.");
@@ -70,8 +69,7 @@ class Login extends Component {
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username,
-    color: state.color
+    username: state.username
   };
 };
 

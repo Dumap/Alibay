@@ -19,10 +19,23 @@ class App extends Component {
     );
   };
 
+  displayLogout = () => {
+    return (
+      <>
+        <div style={{ padding: "20px" }}>
+          <h1>Hello {this.props.username}</h1>
+          <Logout />
+        </div>
+      </>
+    );
+  };
+
   render() {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        {this.props.isLogin === true ? <Logout /> : this.displayHomepage()}
+        {this.props.isLogin === true
+          ? this.displayLogout()
+          : this.displayHomepage()}
       </div>
     );
   }

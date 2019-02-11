@@ -23,8 +23,7 @@ class Logout extends Component {
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username,
-    color: state.color
+    username: state.username
   };
 };
 
