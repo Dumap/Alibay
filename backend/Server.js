@@ -1,6 +1,6 @@
 const DB_NAME = "decode-alibay";
 const DB_COLLECTION_PWD = "passwords";
-const DB_COLLECTION_ITEM = "items";
+const DB_COLLECTION_ITEMS = "items";
 
 let express = require("express");
 let cors = require("cors");
@@ -21,66 +21,85 @@ io.origins("*:*");
 
 let sessions = [];
 
-let getUser = function(socket, dbo, userInfo) {};
-let setUser = function(socket, dbo, userInfo) {
+let dbo = undefined;
+let dbs = MongoClient.connect(url, { useNewUrlParser: true }, (err, allDbs) => {
+  if (err) throw err;
+  dbs = allDbs;
+  dbo = dbs.db(DB_NAME);
+});
+
+let getUser = (userInfo, cb) => {
+  dbo
+    .collection(DB_COLLECTION_PWD)
+    .findOne({ user: userInfo.user }, (err, result) => {
+      if (err) throw err;
+      cb(result);
+    });
+};
+let setUser = userInfo => {
   dbo.collection(DB_COLLECTION_PWD).insertOne(userInfo, (err, result) => {
     if (err) throw err;
   });
 };
 
+let addItem = itemInfo => {
+  dbo.collection(DB_COLLECTION_ITEMS).insertOne(itemInfo, (err, result) => {
+    if (err) throw err;
+  });
+};
+
+let getAllItems = socket => {
+  dbo
+    .collection(DB_COLLECTION_ITEMS)
+    .find({})
+    .toArray((err, result) => {
+      if (err) throw err;
+      socket.emit("send-items", { success: true, items: result });
+    });
+};
+
 io.on("connection", function(socket) {
+  /** */
   socket.on("signup", newUser => {
     console.log("in socket signup", newUser);
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
-      if (err) throw err;
-      let dbo = db.db(DB_NAME);
-      dbo
-        .collection(DB_COLLECTION_PWD)
-        .find({ user: newUser.user })
-        .toArray((err, result) => {
-          if (err) throw err;
-          if (result.length === 0) {
-            setUser(socket, dbo, newUser);
-            socket.emit("signup-success", { success: true });
-          } else {
-            socket.emit("signup-success", { success: false });
-          }
-          db.close();
-        });
-    });
+    let cb = result => {
+      if (!result) {
+        setUser(newUser);
+        socket.emit("signup-success", { success: true });
+      } else {
+        socket.emit("signup-success", { success: false });
+      }
+    };
+    getUser(newUser, cb);
   });
+
+  /** */
   socket.on("login", userInfo => {
     console.log("in socket login", userInfo);
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
-      if (err) throw err;
-      let dbo = db.db(DB_NAME);
-      dbo
-        .collection(DB_COLLECTION_PWD)
-        .find({ user: userInfo.user })
-        .toArray((err, result) => {
-          if (err) throw err;
-          if (result.length !== 0 && userInfo.pwd === result[0].pwd) {
-            socket.emit("login-success", {
-              success: true,
-              username: result[0].user
-            });
-          } else {
-            socket.emit("login-success", false);
-          }
-          db.close();
+
+    let cb = result => {
+      if (result && userInfo.pwd === result.pwd) {
+        socket.emit("login-success", {
+          success: true,
+          username: result.user
         });
-    });
+      } else {
+        socket.emit("login-success", { success: false });
+      }
+    };
+    let result = getUser(userInfo, cb);
   });
-  socket.on("logout", userInfo => {
-    MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
-      if (err) throw err;
-      let dbo = db.db(DB_NAME);
-      let newMsg = {
-        user: userInfo.user,
-        msg: " has logged out."
-      };
-      db.close();
-    });
+
+  /** */
+  socket.on("logout", userInfo => {});
+
+  /** */
+  socket.on("add-item", newItem => {
+    addItem(newItem);
+  });
+  /** */
+  socket.on("ask-items", () => {
+    getAllItems(socket);
   });
 });
 
