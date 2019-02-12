@@ -42,7 +42,7 @@ let setUser = userInfo => {
   });
 };
 
-let addItem = itemInfo => {
+let setItem = itemInfo => {
   dbo.collection(DB_COLLECTION_ITEMS).insertOne(itemInfo, (err, result) => {
     if (err) throw err;
   });
@@ -79,6 +79,7 @@ io.on("connection", function(socket) {
 
     let cb = result => {
       if (result && userInfo.pwd === result.pwd) {
+        // console.log(socket.request.header.cookie);
         socket.emit("login-success", {
           success: true,
           username: result.user
@@ -87,7 +88,7 @@ io.on("connection", function(socket) {
         socket.emit("login-success", { success: false });
       }
     };
-    let result = getUser(userInfo, cb);
+    getUser(userInfo, cb);
   });
 
   /** */
@@ -95,7 +96,8 @@ io.on("connection", function(socket) {
 
   /** */
   socket.on("add-item", newItem => {
-    addItem(newItem);
+    console.log("in add item", newItem);
+    setItem(newItem);
   });
   /** */
   socket.on("ask-items", () => {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import Socket from "./Socket";
+import Logout from "./Logout";
 
 class Market extends Component {
   displayItems = () => {
@@ -46,7 +47,13 @@ class Market extends Component {
     return (
       <div>
         <div>
-          <Link to={"/loginscreen/"}>Login/Signin</Link>
+          {this.props.isLogin === true ? (
+            <>
+              <Link to={"/additem/"}>Add Item</Link> <Logout />
+            </>
+          ) : (
+            <Link to={"/loginscreen/"}>Login/Signin</Link>
+          )}
         </div>
         <div>
           <h1>{this.selectTitle()}</h1>

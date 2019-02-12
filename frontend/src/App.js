@@ -5,6 +5,7 @@ import "./App.css";
 import LoginScreen from "./LoginScreen";
 import Logout from "./Logout";
 import Market from "./Market";
+import AddItem from "./AddItem";
 
 class App extends Component {
   constructor(props) {
@@ -20,13 +21,22 @@ class App extends Component {
     return <LoginScreen />;
   };
 
+  renderAddItem = () => {
+    return <AddItem />;
+  };
+
+  renderLogout = () => {
+    return <div />;
+  };
+
   render() {
     return (
       <BrowserRouter>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div>
           {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
           <Route exact path="/" render={this.renderHomepage} />
           <Route exact path="/loginscreen" render={this.renderLoginScreen} />
+          <Route exact path="/additem" render={this.renderAddItem} />
         </div>
       </BrowserRouter>
     );
