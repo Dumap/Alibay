@@ -25,7 +25,7 @@ let reducer = function(state, action) {
 
 const myStore = createStore(
   reducer,
-  { isLogin: false, page: "market", username: "", items: [] },
+  { isLogin: false, page: "Market Place", username: "", items: [], cart: []  },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

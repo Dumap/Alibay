@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Socket from "./Socket";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   container: {
@@ -35,7 +36,7 @@ class AddItem extends Component {
       desc:
         "Monkey is a common name that may refer to groups or species of mammals, in part, the simians of infraorder Simiiformes.",
       price: 900,
-      img: "image.jpg"
+      img: "img.jpg"
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -47,6 +48,12 @@ class AddItem extends Component {
     });
   };
 
+  handleOnChangeImage = event => {
+    console.log("handleOnChangeImage");
+    console.log(event.target.files);
+    this.setState({ img: event.target.files });
+  };
+
   handleToggle(event) {
     console.log("toggled");
   }
@@ -54,6 +61,7 @@ class AddItem extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    console.log("allo");
     Socket.emit("add-item", {
       seller: this.props.username,
       location: this.state.location,
@@ -61,10 +69,36 @@ class AddItem extends Component {
       desc: this.state.desc,
       price: this.state.price
     });
+
+    // console.log(this.state.img);
+    // const files = Array.from(this.state.img);
+    // this.setState({ uploading: true });
+
+    // const formData = new FormData();
+
+    // files.forEach((file, i) => {});
+    // console.log("files", files);
+    // formData.append("avatar", files[0]);
+    // console.log("right before the fetch");
+    // console.log("formData", formData);
+
+    // fetch("http://localhost:4001/image-upload", {
+    //   method: "POST",
+    //   body: formData
+    // })
+    //   .then(res => res.json())
+    //   .then(images => {
+    //     console.log("fetch");
+    //     this.setState({
+    //       uploading: false,
+    //       images
+    //     });
+    //   });
+
     this.props.history.push("/");
   }
 
-  render() {
+  renderDisplay = () => {
     const { classes } = this.props;
     return (
       <div>
@@ -98,7 +132,7 @@ class AddItem extends Component {
                 margin="normal"
                 variant="outlined"
               />
-              <TextField
+              {/* <TextField
                 id="outlined-uncontrolled"
                 label="image"
                 className={classes.textField}
@@ -106,6 +140,12 @@ class AddItem extends Component {
                 onChange={this.handleChange("image")}
                 margin="normal"
                 variant="outlined"
+              /> */}
+              <input
+                type="file"
+                id="single"
+                name="avatar"
+                onChange={this.handleOnChangeImage}
               />
               <TextField
                 id="outlined-uncontrolled"
@@ -127,6 +167,25 @@ class AddItem extends Component {
             </form>
           </div>
         </MuiThemeProvider>
+      </div>
+    );
+  };
+
+  renderLoggin = () => {
+    return (
+      <div>
+        You need to be logged in to see this page.
+        <Link to={"/loginscreen/"}>Login/Signin</Link>
+      </div>
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.isLogin === true
+          ? this.renderDisplay()
+          : this.renderLoggin()}
       </div>
     );
   }

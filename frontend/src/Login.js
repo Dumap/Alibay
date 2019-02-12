@@ -88,7 +88,9 @@ const style = {
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username
+    username: state.username,
+    items: state.items,
+    cart: state.cart
   };
 };
 

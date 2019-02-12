@@ -6,11 +6,12 @@ import LoginScreen from "./LoginScreen";
 import Market from "./Market";
 import AddItem from "./AddItem";
 import ButtonAppBar from './ButtonAppBar';
+import ItemDetail from "./ItemDetail";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { itemDetail: "" };
   }
 
   renderHomepage = () => {
@@ -45,16 +46,27 @@ class App extends Component {
     return <div />;
   };
 
+  renderItemDetail = routerData => {
+    return <ItemDetail item={routerData.match.params.id} />;
+  };
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-        {console.log("The page we are looking at: ", this.props.page)}
         <ButtonAppBar login={this.props.isLogin} title={this.props.page}/> 
-          {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
-          <Route exact path="/" render={this.renderHomepage} />
-          <Route exact path="/loginscreen" render={this.renderLoginScreen} />
-          <Route exact path="/additem" render={this.renderAddItem} />
+          <Route exact={true} path="/" render={this.renderHomepage} />
+          <Route
+            exact={true}
+            path="/loginscreen"
+            render={this.renderLoginScreen}
+          />
+          <Route exact={true} path="/additem" render={this.renderAddItem} />
+          <Route
+            exact={true}
+            path="/itemdetail/:id"
+            render={this.renderItemDetail}
+          />
         </div>
       </BrowserRouter>
     );
@@ -65,7 +77,9 @@ let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
     username: state.username,
-    page: state.page
+    page: state.page,
+    items: state.items,
+    cart: state.cart
   };
 };
 
