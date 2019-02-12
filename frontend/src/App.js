@@ -32,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
+        <div className="App">
           {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
           <Route exact path="/" render={this.renderHomepage} />
           <Route exact path="/loginscreen" render={this.renderLoginScreen} />
