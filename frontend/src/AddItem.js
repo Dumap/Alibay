@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import AppBar from "material-ui/AppBar";
 import RaisedButton from "material-ui/RaisedButton";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -71,10 +70,6 @@ class AddItem extends Component {
       <div>
         <MuiThemeProvider>
           <div>
-            <AppBar
-              title="Sell Item"
-              onLeftIconButtonTouchTap={this.handleToggle}
-            />
             <form className={classes.container} noValidate autoComplete="off">
               <TextField
                 id="outlined-uncontrolled"
@@ -123,8 +118,10 @@ class AddItem extends Component {
               />
               <RaisedButton
                 label="Submit"
-                primary={true}
+                primary={false}
                 style={style}
+                color="#FFFFFF"
+                backgroundColor="#3d54b3"
                 onClick={event => this.handleSubmit(event)}
               />
             </form>

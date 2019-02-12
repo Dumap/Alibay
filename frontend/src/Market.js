@@ -1,23 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Link } from "react-router-dom";
 import Socket from "./Socket";
-import Logout from "./Logout";
+import { withStyles } from '@material-ui/core/styles';
+import MediaCard from './ItemCard';
 
+const styles = {
+  container: {
+    flex: 1, 
+    flexDirection: 'row'
+  }
+};
 class Market extends Component {
   displayItems = () => {
+    console.log("Dislaying Items")
+    console.log("Items count: " + this.props.items.length)
     return this.props.items.map(element => {
-      return (
-        <div style={{ marginBottom: "10px" }}>
-          <div>
-            {element.title}, {element.price}$
-          </div>
-          <div>
-            {element.seller}, {element.location}
-          </div>
-          <div>{element.desc.slice(0, 50).concat("...")}</div>
-        </div>
-      );
+      return (<MediaCard elem={element}/>);
     });
   };
   componentDidMount = () => {
@@ -45,19 +43,7 @@ class Market extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          {this.props.isLogin === true ? (
-            <>
-              <Link to={"/additem/"}>Add Item</Link> <Logout />
-            </>
-          ) : (
-            <Link to={"/loginscreen/"}>Login/Signin</Link>
-          )}
-        </div>
-        <div>
-          <h1>{this.selectTitle()}</h1>
-        </div>
+      <div className={this.props.classes.container}>
         {this.displayItems()}
       </div>
     );
@@ -74,4 +60,5 @@ let mapStateToProps = function(state) {
 
 let connectMarket = connect(mapStateToProps)(Market);
 
-export default connectMarket;
+export default withStyles(styles)(connectMarket);
+

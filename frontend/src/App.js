@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 import LoginScreen from "./LoginScreen";
-import Logout from "./Logout";
 import Market from "./Market";
 import AddItem from "./AddItem";
+import ButtonAppBar from './ButtonAppBar';
 
 class App extends Component {
   constructor(props) {
@@ -14,14 +14,30 @@ class App extends Component {
   }
 
   renderHomepage = () => {
+    let title = "Market Place";
+    if (this.props.isLogin === true){
+      title = this.props.username + "'s Market Place"
+    }
+    this.props.dispatch({
+      type: "changePage",
+      content: title
+    })
     return <Market />;
   };
 
   renderLoginScreen = () => {
+    this.props.dispatch({
+      type: "changePage",
+      content: "Login"
+    })
     return <LoginScreen />;
   };
 
   renderAddItem = () => {
+    this.props.dispatch({
+      type: "changePage",
+      content: "Add Item"
+    })
     return <AddItem />;
   };
 
@@ -33,6 +49,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+        {console.log("The page we are looking at: ", this.props.page)}
+        <ButtonAppBar login={this.props.isLogin} title={this.props.page}/> 
           {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
           <Route exact path="/" render={this.renderHomepage} />
           <Route exact path="/loginscreen" render={this.renderLoginScreen} />
@@ -43,14 +61,11 @@ class App extends Component {
   }
 }
 
-const style = {
-  margin: 15
-};
-
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username
+    username: state.username,
+    page: state.page
   };
 };
 

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Socket from "./Socket";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import AppBar from "material-ui/AppBar";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import { withRouter } from "react-router-dom";
+
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Login extends Component {
       password: ""
     };
   }
+
   handleUsernameChange = event => {
     this.setState({ username: event.target.value });
   };
@@ -23,9 +24,7 @@ class Login extends Component {
     this.setState({ password: event.target.value });
   };
 
-  handleSubmit = event => {
-    console.log("in Login handleSubmit");
-    event.preventDefault();
+  handleSubmit = () => {
     Socket.emit("login", {
       user: this.state.username,
       pwd: this.state.password
@@ -48,10 +47,9 @@ class Login extends Component {
   };
   render() {
     return (
-      <div>
+      <div onKeyPress={(target) => {if(target.charCode===13){this.handleSubmit();}}}>
         <MuiThemeProvider>
           <div>
-            <AppBar title="Login" />
             <TextField
               hintText="Enter your Username"
               floatingLabelText="Username"
@@ -71,8 +69,10 @@ class Login extends Component {
             <br />
             <RaisedButton
               label="Submit"
-              primary={true}
+              primary={false}
               style={style}
+              color="#FFFFFF"
+              backgroundColor="#3d54b3"
               onClick={event => this.handleSubmit(event)}
             />
           </div>
