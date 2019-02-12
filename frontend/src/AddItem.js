@@ -4,10 +4,10 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RaisedButton from "material-ui/RaisedButton";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Socket from "./Socket";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const styles = theme => ({
   container: {
@@ -50,8 +50,8 @@ class AddItem extends Component {
 
   handleOnChangeImage = event => {
     console.log("handleOnChangeImage");
-    console.log(event.target.files);
-    this.setState({ img: event.target.files });
+    console.log(event.target.files[0]);
+    this.setState({ img: event.target.files[0] });
   };
 
   handleToggle(event) {
@@ -61,39 +61,46 @@ class AddItem extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    console.log("allo");
-    Socket.emit("add-item", {
+    let path = "";
+
+    console.log("CHANGING");
+    const file = this.state.img;
+    const formData = new FormData();
+    formData.append("avatar", file);
+    console.log("formatData", formData);
+    fetch("http://localhost:4001/uploadImage", {
+      body: file,
+      method: "POST",
+      headers: { name: file.name }
+    })
+      .then(x => x.text())
+      .then(responseBody => {
+        path = JSON.parse(responseBody).path;
+      });
+
+    let body = JSON.stringify({
       seller: this.props.username,
       location: this.state.location,
       title: this.state.title,
       desc: this.state.desc,
-      price: this.state.price
+      price: this.state.price,
+      img: path
     });
 
-    // console.log(this.state.img);
-    // const files = Array.from(this.state.img);
-    // this.setState({ uploading: true });
+    fetch("http://localhost:4001/add-item", {
+      method: "POST",
+      body: body,
+      image: formData
+    })
+      .then(res => res.json())
+      .then(images => {
+        console.log("then image", images);
 
-    // const formData = new FormData();
-
-    // files.forEach((file, i) => {});
-    // console.log("files", files);
-    // formData.append("avatar", files[0]);
-    // console.log("right before the fetch");
-    // console.log("formData", formData);
-
-    // fetch("http://localhost:4001/image-upload", {
-    //   method: "POST",
-    //   body: formData
-    // })
-    //   .then(res => res.json())
-    //   .then(images => {
-    //     console.log("fetch");
-    //     this.setState({
-    //       uploading: false,
-    //       images
-    //     });
-    //   });
+        // this.setState({
+        //   uploading: false,
+        //   images
+        // });
+      });
 
     this.props.history.push("/");
   }

@@ -3,8 +3,19 @@ import React, { Component } from "react";
 class ItemDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = { item: "" };
+    this.state = { item: {} };
   }
+  displayItem = () => {
+    if (Object.entries(this.state.item).length === 0) {
+      return <div>This item does not exist.</div>;
+    } else {
+      return (
+        <div>
+          <h1>{this.state.item.title}</h1>
+        </div>
+      );
+    }
+  };
   componentDidMount = () => {
     let itemId = this.props.item;
     console.log(itemId);
@@ -17,23 +28,23 @@ class ItemDetail extends Component {
         .then(responseBody => {
           if (responseBody.success === true) {
             this.setState({
-              item: <div>Hello</div>
+              item: responseBody.item
             });
           } else {
             this.setState({
-              item: <div>The item does not exist</div>
+              item: {}
             });
             return;
           }
         });
     } else {
       this.setState({
-        item: <div>The item does not exist</div>
+        item: {}
       });
     }
   };
   render() {
-    return this.state.item;
+    return this.displayItem();
   }
 }
 
