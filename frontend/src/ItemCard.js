@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
@@ -22,53 +23,74 @@ const styles = {
   },
 };
 
-function ItemCard(props) {
-  const { classes } = props;
-  console.log("elem:", props.elem)
-  return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt={props.elem.title}
-          className={classes.media}
-          height="140"
-          image={props.elem.img}
-          title={props.elem.title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.elem.title}
-          </Typography>
-          <Typography component="p">
-            {props.elem.desc}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            Price: ${props.elem.price}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            Seller: {props.elem.seller}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button 
-          size="small" 
-          color="primary"
-          onClick={() => {props.history.push("/itemdetail/"+props.elem._id)}}
-          >
-          Buy
-        </Button>
-      </CardActions>
-    </Card>
-  );
+class ItemCard extends Component{
+  constructor(props) {
+    super(props);
+  }
+  render(){
+    return (
+      <Card className={this.props.classes.card}>
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            alt={this.props.elem.title}
+            className={this.props.classes.media}
+            height="140"
+            image={this.props.elem.img}
+            title={this.props.elem.title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {this.props.elem.title}
+            </Typography>
+            <Typography component="p">
+              {this.props.elem.desc}
+            </Typography>
+            <Typography className={this.props.classes.pos} color="textSecondary">
+              Price: ${this.props.elem.price}
+            </Typography>
+            <Typography className={this.props.classes.pos} color="textSecondary">
+              Seller: {this.props.elem.seller}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button 
+            size="small" 
+            color="primary"
+            onClick={() => {
+                this.props.dispatch({
+                  type: "changePage",
+                  content: "Item Detail"
+                })
+                  this.props.history.push("/itemdetail/"+this.props.elem._id)
+                }}
+            >
+            Buy
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  }
 }
 
 ItemCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+let mapStateToProps = function(state) {
+  return {
+    isLogin: state.isLogin,
+    username: state.username,
+    page: state.page,
+    items: state.items,
+    cart: state.cart
+  };
+};
+
+let connectItemCard = connect(mapStateToProps)(ItemCard);
+
 export default compose(
   withStyles(styles)
-)(withRouter(ItemCard))
+)(withRouter(connectItemCard))
 
