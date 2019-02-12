@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Socket from "./Socket";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import AppBar from "material-ui/AppBar";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
 
 class Register extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      first_name:'',
-      last_name:'',
-      username:'',
-      password:''
-    }
+    this.state = {
+      first_name: "",
+      last_name: "",
+      username: "",
+      password: ""
+    };
   }
   handleSubmit = event => {
     console.log("in Signup handleSubmit");
@@ -33,7 +33,12 @@ class Register extends Component {
         alert("Username already exist.");
       }
     });
-    this.setState({ first_name:'', last_name:'', username: "", password: "" });
+    this.setState({
+      first_name: "",
+      last_name: "",
+      username: "",
+      password: ""
+    });
   };
 
   render() {
@@ -41,53 +46,66 @@ class Register extends Component {
       <div>
         <MuiThemeProvider>
           <div>
-          <AppBar
-             title="Register"
-           />
-           <TextField
-             hintText="Enter your First Name"
-             floatingLabelText="First Name"
-             onChange = {(event,newValue) => this.setState({first_name:newValue})}
-             />
-           <br/>
-           <TextField
-             hintText="Enter your Last Name"
-             floatingLabelText="Last Name"
-             onChange = {(event,newValue) => this.setState({last_name:newValue})}
-             />
-           <br/>
-           <TextField
-             hintText="Enter your Username"
-             type="username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
-             />
-           <br/>
-           <TextField
-             type = "password"
-             hintText="Enter your Password"
-             floatingLabelText="Password"
-             onChange = {(event,newValue) => this.setState({password:newValue})}
-             />
-           <br/>
-           <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleSubmit(event)}/>
+            <AppBar title="Register" />
+            <TextField
+              hintText="Enter your First Name"
+              floatingLabelText="First Name"
+              onChange={(event, newValue) =>
+                this.setState({ first_name: newValue })
+              }
+            />
+            <br />
+            <TextField
+              hintText="Enter your Last Name"
+              floatingLabelText="Last Name"
+              onChange={(event, newValue) =>
+                this.setState({ last_name: newValue })
+              }
+            />
+            <br />
+            <TextField
+              hintText="Enter your Username"
+              type="username"
+              floatingLabelText="Username"
+              onChange={(event, newValue) =>
+                this.setState({ username: newValue })
+              }
+            />
+            <br />
+            <TextField
+              type="password"
+              hintText="Enter your Password"
+              floatingLabelText="Password"
+              onChange={(event, newValue) =>
+                this.setState({ password: newValue })
+              }
+            />
+            <br />
+            <RaisedButton
+              label="Submit"
+              primary={true}
+              style={style}
+              onClick={event => this.handleSubmit(event)}
+            />
           </div>
-         </MuiThemeProvider>
+        </MuiThemeProvider>
       </div>
     );
   }
 }
 const style = {
-  margin: 15,
+  margin: 15
 };
 
 let mapStateToProps = function(state) {
-    return {
-      isLogin: state.isLogin,
-      username: state.username
-    };
+  return {
+    isLogin: state.isLogin,
+    username: state.username,
+    items: state.items,
+    cart: state.cart
   };
-  
-  let connectRegister = connect(mapStateToProps)(Register);
-  
-  export default connectRegister;
+};
+
+let connectRegister = connect(mapStateToProps)(Register);
+
+export default connectRegister;

@@ -7,6 +7,7 @@ let cors = require("cors");
 let bodyParser = require("body-parser");
 let cookieParser = require("cookie-parser");
 let cookie = require("cookie");
+
 let app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.raw({ type: "*/*" }));
@@ -14,10 +15,14 @@ app.use(cookieParser());
 
 let MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://admin:Er123123@ds331135.mlab.com:31135/decode-alibay";
+let ObjectId = require("mongodb").ObjectId;
 
 let http = require("http").Server(app);
 let io = require("socket.io")(http);
 io.origins("*:*");
+
+var multer = require("multer");
+var upload = multer({ dest: "./public" });
 
 let sessions = [];
 
@@ -42,6 +47,15 @@ let setUser = userInfo => {
   });
 };
 
+let getItem = (itemInfo, cb) => {
+  dbo
+    .collection(DB_COLLECTION_ITEMS)
+    .findOne(ObjectId(itemInfo), (err, result) => {
+      if (err) throw err;
+      cb(result);
+    });
+};
+
 let setItem = itemInfo => {
   dbo.collection(DB_COLLECTION_ITEMS).insertOne(itemInfo, (err, result) => {
     if (err) throw err;
@@ -58,10 +72,19 @@ let getAllItems = socket => {
     });
 };
 
+let getSearchItems = (socket, search) => {
+  dbo
+    .collection(DB_COLLECTION_ITEMS)
+    .find(search)
+    .toArray((err, result) => {
+      if (err) throw err;
+      socket.emit("send-search-items", { success: true, items: result });
+    });
+};
+
 io.on("connection", function(socket) {
   /** */
   socket.on("signup", newUser => {
-    console.log("in socket signup", newUser);
     let cb = result => {
       if (!result) {
         setUser(newUser);
@@ -75,8 +98,6 @@ io.on("connection", function(socket) {
 
   /** */
   socket.on("login", userInfo => {
-    console.log("in socket login", userInfo);
-
     let cb = result => {
       if (result && userInfo.pwd === result.pwd) {
         // console.log(socket.request.header.cookie);
@@ -96,13 +117,42 @@ io.on("connection", function(socket) {
 
   /** */
   socket.on("add-item", newItem => {
-    console.log("in add item", newItem);
+    // console.log("in add item", newItem);
     setItem(newItem);
   });
   /** */
   socket.on("ask-items", () => {
     getAllItems(socket);
   });
+
+  /** */
+  socket.on("ask-search-items", search => {
+    getAllItems(socket, search);
+  });
 });
+
+// app.post("/image-upload", upload.single("avatar"), function(req, res) {
+//   console.log("in image-upload");
+//   console.log(req.file);
+
+//   // var cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
+
+//   res.send({ success: true, images: "" });
+// });
+
+app.post("/find-item", function(req, res) {
+  let body = JSON.parse(req.body);
+
+  let cb = result => {
+    if (result) {
+      res.send({ success: true, item: result });
+    } else {
+      res.send({ success: false });
+    }
+  };
+  getItem(body.id, cb);
+});
+
+app.listen(4001);
 
 io.listen(4000);

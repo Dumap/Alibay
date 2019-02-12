@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 import LoginScreen from "./LoginScreen";
-import Logout from "./Logout";
 import Market from "./Market";
 import AddItem from "./AddItem";
+import ItemDetail from "./ItemDetail";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { itemDetail: "" };
   }
 
   renderHomepage = () => {
@@ -29,28 +29,39 @@ class App extends Component {
     return <div />;
   };
 
+  renderItemDetail = routerData => {
+    return <ItemDetail item={routerData.match.params.id} />;
+  };
+
   render() {
     return (
       <BrowserRouter>
         <div>
           {/* {this.props.isLogin === true ? <Market /> : <LoginScreen />} */}
-          <Route exact path="/" render={this.renderHomepage} />
-          <Route exact path="/loginscreen" render={this.renderLoginScreen} />
-          <Route exact path="/additem" render={this.renderAddItem} />
+          <Route exact={true} path="/" render={this.renderHomepage} />
+          <Route
+            exact={true}
+            path="/loginscreen"
+            render={this.renderLoginScreen}
+          />
+          <Route exact={true} path="/additem" render={this.renderAddItem} />
+          <Route
+            exact={true}
+            path="/itemdetail/:id"
+            render={this.renderItemDetail}
+          />
         </div>
       </BrowserRouter>
     );
   }
 }
 
-const style = {
-  margin: 15
-};
-
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username
+    username: state.username,
+    items: state.items,
+    cart: state.cart
   };
 };
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Socket from "./Socket";
 import Logout from "./Logout";
 
@@ -10,7 +10,9 @@ class Market extends Component {
       return (
         <div style={{ marginBottom: "10px" }}>
           <div>
-            {element.title}, {element.price}$
+            <Link to={"/itemdetail/" + element._id}>
+              {element.title}, {element.price}$
+            </Link>
           </div>
           <div>
             {element.seller}, {element.location}
@@ -68,7 +70,8 @@ let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
     username: state.username,
-    items: state.items
+    items: state.items,
+    cart: state.cart
   };
 };
 
