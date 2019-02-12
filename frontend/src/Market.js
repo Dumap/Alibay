@@ -3,19 +3,38 @@ import { connect } from "react-redux";
 import Socket from "./Socket";
 import { withStyles } from '@material-ui/core/styles';
 import MediaCard from './ItemCard';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
-const styles = {
+const styles = theme => ({
   container: {
     flex: 1, 
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  root: {
+    margin: 'auto',
+    width: '90%',
+    padding: '20px'
+  },
+  paper: {
+    padding: theme.spacing.unit * 1,
+    margin: theme.spacing.unit * 1,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    minWidth: 275
   }
-};
+});
 class Market extends Component {
   displayItems = () => {
     console.log("Dislaying Items")
     console.log("Items count: " + this.props.items.length)
     return this.props.items.map(element => {
-      return (<MediaCard elem={element}/>);
+      return ( <Grid item md={3}>
+                  <Paper className={this.props.classes.paper}>
+                    <MediaCard elem={element}/>
+                  </Paper>
+                </Grid>);
     });
   };
   componentDidMount = () => {
@@ -43,8 +62,10 @@ class Market extends Component {
 
   render() {
     return (
-      <div className={this.props.classes.container}>
-        {this.displayItems()}
+      <div className={this.props.classes.root}>
+        <Grid container spacing={24}>
+          {this.displayItems()}
+        </Grid>
       </div>
     );
   }

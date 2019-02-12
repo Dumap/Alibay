@@ -4,6 +4,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RaisedButton from "material-ui/RaisedButton";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Input from '@material-ui/core/Input';
 import Socket from "./Socket";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -31,12 +32,12 @@ class AddItem extends Component {
     super(props);
     this.state = {
       seller: this.props.username,
-      location: "Montréal, Qc",
-      title: "This is an item",
+      location: "",
+      title: "",
       desc:
-        "Monkey is a common name that may refer to groups or species of mammals, in part, the simians of infraorder Simiiformes.",
-      price: 900,
-      img: "img.jpg"
+        "",
+      price: "",
+      img: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -60,8 +61,6 @@ class AddItem extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    console.log("allo");
     Socket.emit("add-item", {
       seller: this.props.username,
       location: this.state.location,
@@ -119,7 +118,7 @@ class AddItem extends Component {
                 label="description"
                 className={classes.textField}
                 value={this.state.desc}
-                onChange={this.handleChange("description")}
+                onChange={this.handleChange("desc")}
                 margin="normal"
                 variant="outlined"
               />
@@ -141,12 +140,6 @@ class AddItem extends Component {
                 margin="normal"
                 variant="outlined"
               /> */}
-              <input
-                type="file"
-                id="single"
-                name="avatar"
-                onChange={this.handleOnChangeImage}
-              />
               <TextField
                 id="outlined-uncontrolled"
                 label="location"
@@ -156,6 +149,14 @@ class AddItem extends Component {
                 margin="normal"
                 variant="outlined"
               />
+              <Input 
+                    accept="image/*" 
+                    className={classes.input} 
+                    id="raised-button-file" 
+                    multiple 
+                    type="file" 
+                    onChange={this.handleOnChangeImage}
+                  /> 
               <RaisedButton
                 label="Submit"
                 primary={false}

@@ -14,8 +14,7 @@ import compose from 'recompose/compose'
 
 const styles = {
   card: {
-    position: "relative",
-    maxWidth: 345,
+    position: "relative"
   },
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -24,19 +23,24 @@ const styles = {
 };
 
 class ItemCard extends Component{
-  constructor(props) {
-    super(props);
-  }
   render(){
     return (
       <Card className={this.props.classes.card}>
-        <CardActionArea>
+        <CardActionArea
+          onClick={() => {
+            this.props.dispatch({
+              type: "changePage",
+              content: "Item Detail"
+            })
+              this.props.history.push("/itemdetail/"+this.props.elem._id)
+            }}
+          >
           <CardMedia
             component="img"
             alt={this.props.elem.title}
             className={this.props.classes.media}
             height="140"
-            image={this.props.elem.img}
+            src={this.props.elem.img}
             title={this.props.elem.title}
           />
           <CardContent>
@@ -58,13 +62,6 @@ class ItemCard extends Component{
           <Button 
             size="small" 
             color="primary"
-            onClick={() => {
-                this.props.dispatch({
-                  type: "changePage",
-                  content: "Item Detail"
-                })
-                  this.props.history.push("/itemdetail/"+this.props.elem._id)
-                }}
             >
             Buy
           </Button>

@@ -34,10 +34,17 @@ class ButtonAppBar extends Component{
         console.log("Title", this.props.title)
 
         if(this.props.title !== "Login" && this.props.title !== "Register"){
-            if(this.props.login === true && this.props.title === "Add Item"){
-                return <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
-            }else if(this.props.login === true){
-                return <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+            if(this.props.login === true ){
+                if(this.props.title.includes("Market Place")){
+                    return <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                }else if(this.props.title === "Add Item"){
+                    return <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                }else if(this.props.title === "Item Detail"){
+                    return (<div>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                            </div>)
+                }
             }else{
                 return <Button id="login" color="inherit" onClick={() => {this.props.history.push("/loginscreen/")}} >Login</Button>
             }
