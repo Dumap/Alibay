@@ -135,7 +135,7 @@ app.post("/add-item", function(req, res) {
   // let image = req.image;
   setItem(JSON.parse(req.body));
 
-  res.send({ success: true });
+  res.send(JSON.stringify({ success: true }));
 });
 
 app.post("/find-item", function(req, res) {
@@ -149,13 +149,13 @@ app.post("/find-item", function(req, res) {
   };
   getItem(body.id, cb);
 });
-app.post("/uploadImage", (req, res) => {
-  console.log(req.headers.name, req.body);
-  fs.writeFileSync("./uploads/" + req.headers.name, req.body);
-  res.send(
-    JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
-  );
-});
+// app.post("/uploadImage", (req, res) => {
+//   console.log(req.headers.name, req.body);
+//   fs.writeFileSync("./uploads/" + req.headers.name, req.body);
+//   res.send(
+//     JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
+//   );
+// });
 app.listen(4001);
 
 io.listen(4000);

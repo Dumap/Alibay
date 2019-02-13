@@ -47,12 +47,6 @@ class AddItem extends Component {
     });
   };
 
-  handleOnChangeImage = event => {
-    console.log("handleOnChangeImage");
-    console.log(event.target.files[0]);
-    this.setState({ img: event.target.files[0] });
-  };
-
   handleToggle(event) {
     console.log("toggled");
   }
@@ -60,39 +54,25 @@ class AddItem extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    console.log("CHANGING");
-    const file = this.state.img;
-    const formData = new FormData();
-    formData.append("avatar", file);
-    console.log("formatData", formData);
-    fetch("http://localhost:4001/uploadImage", {
-      body: file,
-      method: "POST",
-      headers: { name: file.name }
+    let body = JSON.stringify({
+      seller: this.props.username,
+      location: this.state.location,
+      title: this.state.title,
+      desc: this.state.desc,
+      price: this.state.price,
+      img: this.state.img
+    });
+    fetch("http://localhost:4001/add-item", {
+      body: body,
+      method: "POST"
     })
       .then(x => x.text())
       .then(responseBody => {
-        let path = JSON.parse(responseBody).path;
-
-        let body = JSON.stringify({
-          seller: this.props.username,
-          location: this.state.location,
-          title: this.state.title,
-          desc: this.state.desc,
-          price: this.state.price,
-          img: path
-        });
-
-        fetch("http://localhost:4001/add-item", {
-          method: "POST",
-          body: body,
-          image: formData
-        })
-          .then(res => res.json())
-          .then(responseBody => {});
+        let body = JSON.parse(responseBody);
+        if (body.success === true) {
+          this.props.history.push("/");
+        }
       });
-
-    this.props.history.push("/");
   }
 
   renderDisplay = () => {
@@ -116,7 +96,7 @@ class AddItem extends Component {
                 label="description"
                 className={classes.textField}
                 value={this.state.desc}
-                onChange={this.handleChange("description")}
+                onChange={this.handleChange("desc")}
                 margin="normal"
                 variant="outlined"
               />
@@ -129,20 +109,14 @@ class AddItem extends Component {
                 margin="normal"
                 variant="outlined"
               />
-              {/* <TextField
+              <TextField
                 id="outlined-uncontrolled"
                 label="image"
                 className={classes.textField}
                 value={this.state.img}
-                onChange={this.handleChange("image")}
+                onChange={this.handleChange("img")}
                 margin="normal"
                 variant="outlined"
-              /> */}
-              <input
-                type="file"
-                id="single"
-                name="avatar"
-                onChange={this.handleOnChangeImage}
               />
               <TextField
                 id="outlined-uncontrolled"
