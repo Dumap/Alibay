@@ -57,7 +57,7 @@ const styles = theme => ({
     width: "100%"
   },
   logo: {
-    height: 40,
+    height: 35,
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
