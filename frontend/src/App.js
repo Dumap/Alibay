@@ -52,6 +52,11 @@ class App extends Component {
   };
 
   renderShoppingCart = () => {
+    let title = this.props.username + "'s Shopping Cart";
+    this.props.dispatch({
+      type: "changePage",
+      content: title
+    });
     return <ShoppingCart />;
   };
 

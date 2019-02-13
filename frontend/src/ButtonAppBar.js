@@ -18,6 +18,10 @@ const styles = theme => ({
     color: "#FFFFFF",
     flexGrow: 1
   },
+  cart: {
+    marginLeft: 5,
+    cursor: 'pointer' 
+  },
   grow: {
     flexGrow: 1
   },
@@ -66,9 +70,11 @@ class ButtonAppBar extends Component {
   constructor(props) {
     super(props);
 
-    this.renderButtons = this.renderButtons.bind(this);
-    this.renderSearch = this.renderSearch.bind(this);
-  }
+        this.renderButtons = this.renderButtons.bind(this)
+        this.renderSearch = this.renderSearch.bind(this)
+        this.renderCart = this.renderCart.bind(this)
+    }
+
 
   handleOnClick = () => {
     console.log("in Logout handleOnClick");
@@ -112,130 +118,95 @@ class ButtonAppBar extends Component {
     return;
   }
 
-  renderButtons() {
+renderButtons() {
     console.log("Is logged in ?", this.props.login);
     console.log("Title", this.props.title);
 
-    if (this.props.title !== "Login" && this.props.title !== "Register") {
-      if (this.props.login === true) {
-        if (this.props.title.includes("Market Place")) {
-          return (
-            <div>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/additem/");
-                }}
-              >
-                Add Item
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/shoppingcart/");
-                }}
-              >
-                Cart
-              </Button>
-              <Button color="inherit" onClick={this.handleOnClick}>
-                Log out
-              </Button>
-            </div>
-          );
-        } else if (this.props.title === "Add Item") {
-          return (
-            <div>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/");
-                }}
-              >
-                Market Place{" "}
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/shoppingcart/");
-                }}
-              >
-                Cart
-              </Button>
-              <Button color="inherit" onClick={this.handleOnClick}>
-                Log out
-              </Button>
-            </div>
-          );
-        } else if (this.props.title === "Item Detail") {
-          return (
-            <div>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/");
-                }}
-              >
-                Market Place{" "}
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/additem/");
-                }}
-              >
-                Add Item
-              </Button>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.props.history.push("/shoppingcart/");
-                }}
-              >
-                Cart
-              </Button>
-              <Button color="inherit" onClick={this.handleOnClick}>
-                Log out
-              </Button>
-            </div>
-          );
+        if(this.props.title !== "Login" && this.props.title !== "Register"){
+            if(this.props.login === true ){
+                if(this.props.title.includes("Market Place")){
+                    return (<div>
+                                <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                                <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div>)
+                }else if(this.props.title === "Add Item"){
+                    return (<div>
+                                 <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                                 <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div> ) 
+                }else if(this.props.title === "Item Detail"){
+                    return (<div>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                            <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div>)
+                }
+            }else{
+                return <Button id="login" color="inherit" onClick={() => {this.props.history.push("/loginscreen/")}} >Login</Button>
+            }
+        if(this.props.title !== "Login" && this.props.title !== "Register"){
+            if(this.props.login === true ){
+                if(this.props.title.includes("Market Place")){
+                    return (<div>
+                                <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                                <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div>)
+                }else if(this.props.title === "Add Item"){
+                    return (<div>
+                                 <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                                 <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div> ) 
+                }else if(this.props.title.includes("Shopping Cart")){
+                    return (<div>
+                                 <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                                 <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                                 <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div> ) 
+                }else if(this.props.title === "Item Detail"){
+                    return (<div>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                            <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                            <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div>)
+                }
+            }else{
+                return (<div>
+                    <Button id="login" color="inherit" onClick={() => {this.props.history.push("/loginscreen/")}} >Login</Button>
+                </div>)
+            }
         }
-      } else {
-        return (
-          <div className={this.props.classes.root}>
-            <Toolbar>
-              <Typography
-                variant="h6"
-                color="inherit"
-                className={this.props.classes.grow}
-              >
-                {this.props.title}
-              </Typography>
-              {this.renderSearch()}
-              {this.renderButtons()}
-            </Toolbar>
-          </div>
-        );
-      }
     }
-  }
-
-  render() {
-    return (
-      <div className={this.props.classes.root}>
-        <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            className={this.props.classes.grow}
-          >
-            {this.props.title}
-          </Typography>
-          {this.renderButtons()}
-        </Toolbar>
-      </div>
-    );
-  }
 }
+
+    renderCart(){
+        if(this.props.login === true ){
+            return (
+                <div className={this.props.classes.cart} onClick={() => {this.props.history.push("/shoppingcart/")}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                </div>
+            )
+        }
+        return
+    }
+
+    render() {
+        return (
+            <div className={this.props.classes.root}>
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={this.props.classes.grow}>
+                        {this.props.title}
+                    </Typography>
+                    {this.renderSearch()}
+                    {this.renderButtons()}
+                    {this.renderCart()}
+                </Toolbar>
+            </div>
+        );
+    }
+}
+
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
