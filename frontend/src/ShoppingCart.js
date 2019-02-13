@@ -8,7 +8,8 @@ class ShoppingCart extends Component {
   }
 
   displayShoppingCart = () => {
-    this.state.items.map(element => {
+    console.log(this.state.items);
+    return this.state.items.map(element => {
       return <div>{element.title}</div>;
     });
   };
@@ -28,7 +29,9 @@ class ShoppingCart extends Component {
         .then(responseBody => {
           console.log("rb", responseBody);
           if (responseBody.success === true) {
-            items.push(responseBody.item);
+            this.setState({
+              items: this.state.items.concat(responseBody.item)
+            });
           }
         });
     });
@@ -40,6 +43,7 @@ class ShoppingCart extends Component {
     });
   };
   render() {
+    console.log("state", this.state.items.length, this.state.items);
     return (
       <div>
         {Object.entries(this.state.items).length === 0

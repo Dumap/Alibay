@@ -14,10 +14,10 @@ import compose from "recompose/compose";
 
 const styles = {
   container: {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   },
   card: {
     marginTop: 25,
@@ -38,6 +38,7 @@ class ItemDetail extends Component {
   handleOnClickBuy = event => {
     this.props.dispatch({ type: "add-to-cart", itemId: this.props.item });
     console.log("cart", this.props.cart);
+    this.props.history.push("/shoppingcart");
   };
   displayItem = () => {
     if (Object.entries(this.state.item).length === 0) {
@@ -59,7 +60,9 @@ class ItemDetail extends Component {
                 <Typography gutterBottom variant="h5" component="h2">
                   {this.state.item.title}
                 </Typography>
-                <Typography component="p" paragraph align="left">{this.state.item.desc}</Typography>
+                <Typography component="p" paragraph align="left">
+                  {this.state.item.desc}
+                </Typography>
                 <Typography variant="h6" align="left" paragraph>
                   Price: ${this.state.item.price}
                 </Typography>
@@ -113,7 +116,6 @@ class ItemDetail extends Component {
 ItemDetail.propTypes = {
   classes: PropTypes.object.isRequired
 };
-
 
 let mapStateToProps = function(state) {
   return {
