@@ -1,5 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import compose from "recompose/compose";
+
+const styles = {
+  container: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  card: {
+    marginTop: 25,
+    width: 600
+  },
+  media: {
+    // ⚠️ object-fit is not supported by IE 11.
+    objectFit: "cover"
+  }
+};
 
 class ItemDetail extends Component {
   constructor(props) {
@@ -16,11 +44,36 @@ class ItemDetail extends Component {
       return <div>This item does not exist.</div>;
     } else {
       return (
-        <div>
-          <h1>{this.state.item.title}</h1>
-          <div>
-            <input type="button" onClick={this.handleOnClickBuy} value="Buy" />
-          </div>
+        <div className={this.props.classes.container}>
+          <Card className={this.props.classes.card}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                alt={this.state.item.title}
+                className={this.props.classes.media}
+                height="240"
+                src={this.state.item.img}
+                title={this.state.item.title}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {this.state.item.title}
+                </Typography>
+                <Typography component="p" paragraph align="left">{this.state.item.desc}</Typography>
+                <Typography variant="h6" align="left" paragraph>
+                  Price: ${this.state.item.price}
+                </Typography>
+                <Typography variant="h6" align="left" paragraph>
+                  Seller: {this.state.item.seller}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button color="primary" onClick={this.handleOnClickBuy}>
+                Buy
+              </Button>
+            </CardActions>
+          </Card>
         </div>
       );
     }
@@ -57,6 +110,11 @@ class ItemDetail extends Component {
   }
 }
 
+ItemDetail.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
@@ -69,4 +127,4 @@ let mapStateToProps = function(state) {
 
 let connectItemDetail = connect(mapStateToProps)(ItemDetail);
 
-export default connectItemDetail;
+export default compose(withStyles(styles))(withRouter(connectItemDetail));

@@ -49,7 +49,7 @@ class ItemCard extends Component{
             <Typography gutterBottom variant="h5" component="h2">
               {this.props.elem.title}
             </Typography>
-            <Typography component="p">{this.props.elem.desc}</Typography>
+            <Typography component="p">{this.props.elem.desc.length > 35 ? this.props.elem.desc.substring(0,35)+'...' : this.props.elem.desc}</Typography>
             <Typography
               className={this.props.classes.pos}
               color="textSecondary"
