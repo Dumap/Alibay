@@ -61,8 +61,6 @@ class AddItem extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    let path = "";
-
     console.log("CHANGING");
     const file = this.state.img;
     const formData = new FormData();
@@ -75,31 +73,24 @@ class AddItem extends Component {
     })
       .then(x => x.text())
       .then(responseBody => {
-        path = JSON.parse(responseBody).path;
-      });
+        let path = JSON.parse(responseBody).path;
 
-    let body = JSON.stringify({
-      seller: this.props.username,
-      location: this.state.location,
-      title: this.state.title,
-      desc: this.state.desc,
-      price: this.state.price,
-      img: path
-    });
+        let body = JSON.stringify({
+          seller: this.props.username,
+          location: this.state.location,
+          title: this.state.title,
+          desc: this.state.desc,
+          price: this.state.price,
+          img: path
+        });
 
-    fetch("http://localhost:4001/add-item", {
-      method: "POST",
-      body: body,
-      image: formData
-    })
-      .then(res => res.json())
-      .then(images => {
-        console.log("then image", images);
-
-        // this.setState({
-        //   uploading: false,
-        //   images
-        // });
+        fetch("http://localhost:4001/add-item", {
+          method: "POST",
+          body: body,
+          image: formData
+        })
+          .then(res => res.json())
+          .then(responseBody => {});
       });
 
     this.props.history.push("/");
@@ -208,7 +199,10 @@ AddItem.propTypes = {
 let mapStateToProps = function(state) {
   return {
     isLogin: state.isLogin,
-    username: state.username
+    username: state.username,
+    page: state.page,
+    items: state.items,
+    cart: state.cart
   };
 };
 

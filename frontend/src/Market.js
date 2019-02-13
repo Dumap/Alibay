@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Socket from "./Socket";
+<<<<<<< Updated upstream
 import { withStyles } from '@material-ui/core/styles';
 import MediaCard from './ItemCard';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+=======
+import { withStyles } from "@material-ui/core/styles";
+import MediaCard from "./ItemCard";
+>>>>>>> Stashed changes
 
 const styles = theme => ({
   container: {
+<<<<<<< Updated upstream
     flex: 1, 
     flexDirection: 'row',
     justifyContent: 'center'
@@ -23,31 +29,27 @@ const styles = theme => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     minWidth: 275
+=======
+    flex: 1,
+    flexDirection: "row"
+>>>>>>> Stashed changes
   }
 });
 class Market extends Component {
   displayItems = () => {
-    console.log("Dislaying Items")
-    console.log("Items count: " + this.props.items.length)
     return this.props.items.map(element => {
+<<<<<<< Updated upstream
       return ( <Grid item md={3}>
                   <Paper className={this.props.classes.paper}>
                     <MediaCard elem={element}/>
                   </Paper>
                 </Grid>);
+=======
+      return <MediaCard elem={element} />;
+>>>>>>> Stashed changes
     });
   };
   componentDidMount = () => {
-    // let newItem = {
-    //   seller: this.props.username,
-    //   location: "LaSalle, Qc",
-    //   title: "Dinning table",
-    //   desc:
-    //     "Moron is a term once used in psychology and psychiatry to denote mild intellectual disability.[1] The term was closely tied with the American eugenics movement.[",
-    //   price: 1100,
-    //   img: "image.jpg"
-    // };
-    // Socket.emit("add-item", newItem);
     Socket.emit("ask-items");
     Socket.on("send-items", result => {
       this.props.dispatch({ type: "modify-items", items: result.items });
@@ -62,11 +64,15 @@ class Market extends Component {
 
   render() {
     return (
+<<<<<<< Updated upstream
       <div className={this.props.classes.root}>
         <Grid container spacing={24}>
           {this.displayItems()}
         </Grid>
       </div>
+=======
+      <div className={this.props.classes.container}>{this.displayItems()}</div>
+>>>>>>> Stashed changes
     );
   }
 }
@@ -83,4 +89,3 @@ let mapStateToProps = function(state) {
 let connectMarket = connect(mapStateToProps)(Market);
 
 export default withStyles(styles)(connectMarket);
-

@@ -5,8 +5,9 @@ import "./App.css";
 import LoginScreen from "./LoginScreen";
 import Market from "./Market";
 import AddItem from "./AddItem";
-import ButtonAppBar from './ButtonAppBar';
+import ButtonAppBar from "./ButtonAppBar";
 import ItemDetail from "./ItemDetail";
+import ShoppingCart from "./ShoppingCart";
 
 class App extends Component {
   constructor(props) {
@@ -16,13 +17,13 @@ class App extends Component {
 
   renderHomepage = () => {
     let title = "Market Place";
-    if (this.props.isLogin === true){
-      title = this.props.username + "'s Market Place"
+    if (this.props.isLogin === true) {
+      title = this.props.username + "'s Market Place";
     }
     this.props.dispatch({
       type: "changePage",
       content: title
-    })
+    });
     return <Market />;
   };
 
@@ -30,7 +31,7 @@ class App extends Component {
     this.props.dispatch({
       type: "changePage",
       content: "Login"
-    })
+    });
     return <LoginScreen />;
   };
 
@@ -38,7 +39,7 @@ class App extends Component {
     this.props.dispatch({
       type: "changePage",
       content: "Add Item"
-    })
+    });
     return <AddItem />;
   };
 
@@ -50,11 +51,15 @@ class App extends Component {
     return <ItemDetail item={routerData.match.params.id} />;
   };
 
+  renderShoppingCart = () => {
+    return <ShoppingCart />;
+  };
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-        <ButtonAppBar login={this.props.isLogin} title={this.props.page}/> 
+          <ButtonAppBar login={this.props.isLogin} title={this.props.page} />
           <Route exact={true} path="/" render={this.renderHomepage} />
           <Route
             exact={true}
@@ -66,6 +71,11 @@ class App extends Component {
             exact={true}
             path="/itemdetail/:id"
             render={this.renderItemDetail}
+          />
+          <Route
+            exact={true}
+            path="/shoppingcart"
+            render={this.renderShoppingCart}
           />
         </div>
       </BrowserRouter>

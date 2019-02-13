@@ -1,10 +1,16 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class ItemDetail extends Component {
   constructor(props) {
     super(props);
     this.state = { item: {} };
   }
+
+  handleOnClickBuy = event => {
+    this.props.dispatch({ type: "add-to-cart", itemId: this.props.item });
+    console.log("cart", this.props.cart);
+  };
   displayItem = () => {
     if (Object.entries(this.state.item).length === 0) {
       return <div>This item does not exist.</div>;
@@ -12,6 +18,9 @@ class ItemDetail extends Component {
       return (
         <div>
           <h1>{this.state.item.title}</h1>
+          <div>
+            <input type="button" onClick={this.handleOnClickBuy} value="Buy" />
+          </div>
         </div>
       );
     }
@@ -48,4 +57,16 @@ class ItemDetail extends Component {
   }
 }
 
-export default ItemDetail;
+let mapStateToProps = function(state) {
+  return {
+    isLogin: state.isLogin,
+    username: state.username,
+    page: state.page,
+    items: state.items,
+    cart: state.cart
+  };
+};
+
+let connectItemDetail = connect(mapStateToProps)(ItemDetail);
+
+export default connectItemDetail;
