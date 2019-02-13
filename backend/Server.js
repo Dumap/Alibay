@@ -7,6 +7,9 @@ let cors = require("cors");
 let bodyParser = require("body-parser");
 let cookieParser = require("cookie-parser");
 let cookie = require("cookie");
+let formData = require("express-form-data");
+let axios = require("axios");
+let fs = require("fs");
 
 let app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -23,6 +26,7 @@ io.origins("*:*");
 
 var multer = require("multer");
 var upload = multer({ dest: "./public" });
+app.use(formData.parse());
 
 let sessions = [];
 
@@ -116,11 +120,6 @@ io.on("connection", function(socket) {
   socket.on("logout", userInfo => {});
 
   /** */
-  socket.on("add-item", newItem => {
-    // console.log("in add item", newItem);
-    setItem(newItem);
-  });
-  /** */
   socket.on("ask-items", () => {
     getAllItems(socket);
   });
@@ -131,18 +130,16 @@ io.on("connection", function(socket) {
   });
 });
 
-// app.post("/image-upload", upload.single("avatar"), function(req, res) {
-//   console.log("in image-upload");
-//   console.log(req.file);
+app.post("/add-item", function(req, res) {
+  // let body = JSON.parse(req.body);
+  // let image = req.image;
+  setItem(JSON.parse(req.body));
 
-//   // var cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
-
-//   res.send({ success: true, images: "" });
-// });
+  res.send({ success: true });
+});
 
 app.post("/find-item", function(req, res) {
   let body = JSON.parse(req.body);
-
   let cb = result => {
     if (result) {
       res.send({ success: true, item: result });
@@ -152,7 +149,13 @@ app.post("/find-item", function(req, res) {
   };
   getItem(body.id, cb);
 });
-
+app.post("/uploadImage", (req, res) => {
+  console.log(req.headers.name, req.body);
+  fs.writeFileSync("./uploads/" + req.headers.name, req.body);
+  res.send(
+    JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
+  );
+});
 app.listen(4001);
 
 io.listen(4000);
