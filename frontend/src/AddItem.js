@@ -7,7 +7,6 @@ import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const styles = theme => ({
   container: {

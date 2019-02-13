@@ -6,7 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import compose from 'recompose/compose'
-import Logout from "./Logout";
+import { connect } from "react-redux";
+import Socket from "./Socket";
 
 const styles = {
   root: {
@@ -29,6 +30,14 @@ class ButtonAppBar extends Component{
         this.renderButtons = this.renderButtons.bind(this)
     }
 
+    handleOnClick = () => {
+        console.log("in Logout handleOnClick");
+        Socket.emit("logout", {
+          user: this.props.username
+        });
+        this.props.dispatch({ type: "logout" });
+      };
+
     renderButtons(){
         console.log("Is logged in ?", this.props.login)
         console.log("Title", this.props.title)
@@ -36,13 +45,20 @@ class ButtonAppBar extends Component{
         if(this.props.title !== "Login" && this.props.title !== "Register"){
             if(this.props.login === true ){
                 if(this.props.title.includes("Market Place")){
-                    return <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                    return (<div>
+                                <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                                <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div>)
                 }else if(this.props.title === "Add Item"){
-                    return <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                    return (<div>
+                                 <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
+                                 <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
+                            </div> ) 
                 }else if(this.props.title === "Item Detail"){
                     return (<div>
                             <Button  color="inherit" onClick={() => {this.props.history.push("/") }}>Market Place </Button>
                             <Button  color="inherit" onClick={() => {this.props.history.push("/additem/") }}>Add Item</Button>
+                            <Button  color="inherit" onClick={this.handleOnClick}>Log out</Button>
                             </div>)
                 }
             }else{
@@ -70,10 +86,20 @@ ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-//export default withStyles(styles)(ButtonAppBar)
-
+let mapStateToProps = function(state) {
+    return {
+      isLogin: state.isLogin,
+      username: state.username,
+      items: state.items,
+      cart: state.cart
+    };
+  };
+  
+let ConnectedButtonAppBar = connect(mapStateToProps)(ButtonAppBar);
+  
+ 
 export default compose(
     withStyles(styles)
- )(withRouter(ButtonAppBar))
+ )(withRouter(ConnectedButtonAppBar))
 
  
