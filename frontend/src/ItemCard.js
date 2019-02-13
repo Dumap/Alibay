@@ -23,8 +23,9 @@ const styles = {
   }
 };
 
-class ItemCard extends Component {
-  render() {
+
+class ItemCard extends Component{
+  render(){
     return (
       <Card className={this.props.classes.card}>
         <CardActionArea
