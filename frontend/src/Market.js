@@ -1,28 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Socket from "./Socket";
-import { withStyles } from '@material-ui/core/styles';
-import MediaCard from './ItemCard';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-
+import { withStyles } from "@material-ui/core/styles";
+import MediaCard from "./ItemCard";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
   container: {
-
-    flex: 1, 
-    flexDirection: 'row',
-    justifyContent: 'center'
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center"
   },
   root: {
-    margin: 'auto',
-    width: '90%',
-    padding: '20px'
+    margin: "auto",
+    width: "90%",
+    padding: "20px"
   },
   paper: {
     padding: theme.spacing.unit * 1,
     margin: theme.spacing.unit * 1,
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
     minWidth: 275
   }
@@ -30,11 +28,13 @@ const styles = theme => ({
 class Market extends Component {
   displayItems = () => {
     return this.props.items.map(element => {
- return ( <Grid item md={3}>
-            <Paper className={this.props.classes.paper}>
-              <MediaCard elem={element}/>
-            </Paper>
-          </Grid>);
+      return (
+        <Grid item md={3}>
+          <Paper className={this.props.classes.paper}>
+            <MediaCard elem={element} />
+          </Paper>
+        </Grid>
+      );
     });
   };
   componentDidMount = () => {

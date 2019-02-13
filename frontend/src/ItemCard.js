@@ -14,8 +14,12 @@ import compose from "recompose/compose";
 
 const styles = {
   card: {
+<<<<<<< Updated upstream
     position: "relative",
     maxWidth: 345
+=======
+    position: "relative"
+>>>>>>> Stashed changes
   },
   media: {
     // ⚠️ object-fit is not supported by IE 11.
@@ -23,8 +27,13 @@ const styles = {
   }
 };
 
+<<<<<<< Updated upstream
 class ItemCard extends Component{
   render(){
+=======
+class ItemCard extends Component {
+  render() {
+>>>>>>> Stashed changes
     return (
       <Card className={this.props.classes.card}>
         <CardActionArea
@@ -32,10 +41,10 @@ class ItemCard extends Component{
             this.props.dispatch({
               type: "changePage",
               content: "Item Detail"
-            })
-              this.props.history.push("/itemdetail/"+this.props.elem._id)
-            }}
-          >
+            });
+            this.props.history.push("/itemdetail/" + this.props.elem._id);
+          }}
+        >
           <CardMedia
             component="img"
             alt={this.props.elem.title}
@@ -64,7 +73,11 @@ class ItemCard extends Component{
           </CardContent>
         </CardActionArea>
         <CardActions>
+<<<<<<< Updated upstream
           <Button size="small" color="primary" onClick={this.handleOnClickBuy}>
+=======
+          <Button size="small" color="primary">
+>>>>>>> Stashed changes
             Buy
           </Button>
         </CardActions>
