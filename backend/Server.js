@@ -76,13 +76,20 @@ let getAllItems = socket => {
     });
 };
 
-let getSearchItems = (socket, search) => {
+let getSearchItems = (search, cb) => {
+  search.search;
   dbo
     .collection(DB_COLLECTION_ITEMS)
-    .find(search)
+    .find({
+      $or: [
+        { title: { $regex: search.search } },
+        { desc: { $regex: search.search } }
+      ]
+    })
     .toArray((err, result) => {
       if (err) throw err;
-      socket.emit("send-search-items", { success: true, items: result });
+      console.log("result", result);
+      cb(result);
     });
 };
 
@@ -156,6 +163,18 @@ app.post("/find-item", function(req, res) {
 //     JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
 //   );
 // });
+
+app.post("/searchallitems", function(req, res) {
+  let search = JSON.parse(req.body);
+  console.log(search);
+  let cb = function(result) {
+    console.log(result);
+    res.send(JSON.stringify({ success: true, items: result }));
+  };
+
+  let result = getSearchItems(search, cb);
+});
+
 app.listen(4001);
 
 io.listen(4000);
