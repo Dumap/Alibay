@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MediaCard from "./ItemCard";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   container: {
@@ -53,6 +54,7 @@ class Market extends Component {
   render() {
     return (
       <div className={this.props.classes.root}>
+        <div />
         <Grid container spacing={24}>
           {this.displayItems()}
         </Grid>
