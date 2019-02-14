@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import compose from "recompose/compose";
 
 const styles = theme => ({
   layout: {
@@ -47,103 +46,61 @@ const styles = theme => ({
   },
 });
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      items: [],
-      activeStep: 0,
+      items: []
     };
   }
-
-  getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <AddressForm />;
-      case 1:
-        return <PaymentForm />;
-      case 2:
-        return <Review products={this.state.items}/>;
-      default:
-        throw new Error('Unknown step');
-    }
-  }
-
-  handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
-  };
-
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
-  };
 
   displayShoppingCart = () => {
     console.log(this.state.items);
     const { classes } = this.props;
-    const { activeStep } = this.state;
-   /* return this.state.items.map(element => {
-      return <div>{element.title}</div>;
-    }); */
+    let totalPrice = this.state.items.reduce((price, item) => +price + +item.price, 0)
 
     return (
       <React.Fragment>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
-            <Typography component="h1" variant="h4" align="center">
-              Checkout
-            </Typography>
-            <Stepper activeStep={activeStep} className={classes.stepper}>
-              {steps.map(label => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
             <React.Fragment>
-              {activeStep === steps.length ? (
-                <React.Fragment>
-                  <Typography variant="h5" gutterBottom>
-                    Thank you for your order.
+              <Typography variant="h6" gutterBottom>
+                Order summary
+              </Typography>
+              <List disablePadding>
+                {this.state.items.map(product => (
+                  <ListItem className={classes.listItem} key={product.title}>
+                    <ListItemText primary={product.title} secondary={product.desc.length > 35 ? product.desc.substring(0, 35) + "..." : product.desc} />
+                    <Typography variant="body2">${product.price}</Typography>
+                  </ListItem>
+                ))}
+                <ListItem className={classes.listItem}>
+                  <ListItemText primary="Total" />
+                  <Typography variant="subtitle1" className={classes.total}>
+                    ${totalPrice}
                   </Typography>
-                  <Typography variant="subtitle1">
-                    Your order number is #2001539. We have emailed your order confirmation, and will
-                    send you an update when your order has shipped.
-                  </Typography>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {this.getStepContent(activeStep)}
-                  <div className={classes.buttons}>
-                    {activeStep !== 0 && (
-                      <Button onClick={this.handleBack} className={classes.button}>
-                        Back
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                    </Button>
-                  </div>
-                </React.Fragment>
-              )}
+                </ListItem>
+              </List>
             </React.Fragment>
+            <Button className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      this.props.history.push("/");
+                    }}
+            >
+                Continue Shopping
+            </Button>
+            <Button className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      this.props.history.push("/checkout/");
+                    }}
+            >
+                Checkout
+            </Button>
           </Paper>
         </main>
       </React.Fragment>
@@ -206,6 +163,6 @@ ShoppingCart.propTypes = {
 
 let connectShoppingCart = connect(mapStateToProps)(ShoppingCart);
 
-export default withStyles(styles)(connectShoppingCart);
+export default compose(withStyles(styles))(withRouter(connectShoppingCart));
 
 

@@ -8,6 +8,7 @@ import AddItem from "./AddItem";
 import ButtonAppBar from "./ButtonAppBar";
 import ItemDetail from "./ItemDetail";
 import ShoppingCart from "./ShoppingCart";
+import Checkout from './Checkout';
 
 class App extends Component {
   constructor(props) {
@@ -63,6 +64,14 @@ class App extends Component {
     return <ShoppingCart />;
   };
 
+  renderCheckout = () => {
+    this.props.dispatch({
+      type: "changePage",
+      content: "Checkout"
+    });
+    return <Checkout />;
+  };
+
   render() {
     return (
       <BrowserRouter>
@@ -84,6 +93,11 @@ class App extends Component {
             exact={true}
             path="/shoppingcart"
             render={this.renderShoppingCart}
+          />
+          <Route
+            exact={true}
+            path="/checkout"
+            render={this.renderCheckout}
           />
         </div>
       </BrowserRouter>

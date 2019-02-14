@@ -261,7 +261,7 @@ class ButtonAppBar extends Component {
                 </Button>
               </div>
             );
-          } else if (this.props.title === "Item Detail") {
+          } else if (this.props.title === "Item Detail" || this.props.title === "Checkout") {
             return (
               <div>
                 <Button
