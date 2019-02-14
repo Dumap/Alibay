@@ -38,10 +38,13 @@ class Market extends Component {
     });
   };
   componentDidMount = () => {
-    Socket.emit("ask-items");
-    Socket.on("send-items", result => {
-      this.props.dispatch({ type: "modify-items", items: result.items });
-    });
+    console.log(this.props.search);
+    if (this.props.isSearch === false) {
+      Socket.emit("ask-items");
+      Socket.on("send-items", result => {
+        this.props.dispatch({ type: "modify-items", items: result.items });
+      });
+    }
   };
 
   selectTitle = () => {
@@ -50,9 +53,21 @@ class Market extends Component {
       : "Market Place";
   };
 
+  displaySearchTitle = () => {
+    return (
+      <>
+        You have searched for{" "}
+        <span style={{ fontStyle: "italic" }}>{this.props.search}</span>
+      </>
+    );
+  };
+
   render() {
     return (
       <div className={this.props.classes.root}>
+        <div style={{ fontSize: "large", textAlign: "left" }}>
+          {this.props.search === "" ? "" : this.displaySearchTitle()}
+        </div>
         <div />
         <Grid container spacing={24}>
           {this.displayItems()}
@@ -67,7 +82,8 @@ let mapStateToProps = function(state) {
     isLogin: state.isLogin,
     username: state.username,
     items: state.items,
-    cart: state.cart
+    cart: state.cart,
+    search: state.search
   };
 };
 

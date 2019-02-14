@@ -13,7 +13,6 @@ let fs = require("fs");
 
 let app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-app.use(bodyParser.raw({ type: "*/*" }));
 app.use(cookieParser());
 
 let MongoClient = require("mongodb").MongoClient;
@@ -29,6 +28,16 @@ var upload = multer({ dest: "./public" });
 app.use(formData.parse());
 
 let sessions = [];
+
+//Fuck up with Multer
+// app.post("/uploadImage", (req, res) => {
+//   console.log(req.headers.name, req.body);
+//   fs.writeFileSync("./uploads/" + req.headers.name, req.body);
+//   res.send(
+//     JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
+//   );
+// });
+app.use(bodyParser.raw({ type: "*/*" }));
 
 let dbo = undefined;
 let dbs = MongoClient.connect(url, { useNewUrlParser: true }, (err, allDbs) => {
@@ -156,13 +165,6 @@ app.post("/find-item", function(req, res) {
   };
   getItem(body.id, cb);
 });
-// app.post("/uploadImage", (req, res) => {
-//   console.log(req.headers.name, req.body);
-//   fs.writeFileSync("./uploads/" + req.headers.name, req.body);
-//   res.send(
-//     JSON.stringify({ success: true, path: "./uploads/" + req.headers.name })
-//   );
-// });
 
 app.post("/searchallitems", function(req, res) {
   let search = JSON.parse(req.body);

@@ -17,15 +17,11 @@ class App extends Component {
   }
 
   renderHomepage = () => {
-    let title = "Market Place";
-    if (this.props.isLogin === true) {
-      title = this.props.username + "'s Market Place";
-    }
-    this.props.dispatch({
-      type: "changePage",
-      content: title
-    });
-    return <Market />;
+    return <Market isSearch={false} />;
+  };
+
+  renderSearch = () => {
+    return <Market isSearch={true} />;
   };
 
   renderLoginScreen = () => {
@@ -95,6 +91,7 @@ class App extends Component {
             render={this.renderShoppingCart}
           />
           <Route exact={true} path="/checkout" render={this.renderCheckout} />
+          <Route exact={true} path="/search" render={this.renderSearch} />
         </div>
       </BrowserRouter>
     );

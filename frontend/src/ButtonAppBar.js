@@ -97,8 +97,10 @@ class ButtonAppBar extends Component {
         let body = JSON.parse(responseBody);
         this.props.dispatch({
           type: "search-results",
-          search: body.items
+          search: search,
+          results: body.items
         });
+        this.props.history.push("/search/");
       });
   };
 

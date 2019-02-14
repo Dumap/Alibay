@@ -15,7 +15,7 @@ let reducer = function(state, action) {
     case "logout":
       return { ...state, isLogin: false, username: "" };
     case "modify-items":
-      return { ...state, items: action.items };
+      return { ...state, items: action.items, search: "" };
     case "changePage":
       return { ...state, page: action.content };
     case "add-to-cart":
@@ -23,7 +23,7 @@ let reducer = function(state, action) {
     case "empty-cart":
       return { ...state, cart: [] };
     case "search-results":
-      return { ...state, items: action.search };
+      return { ...state, search: action.search, items: action.results };
     default:
       return state;
   }
@@ -36,7 +36,8 @@ const myStore = createStore(
     page: "Market Place",
     username: "",
     items: [],
-    cart: []
+    cart: [],
+    search: ""
   },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
