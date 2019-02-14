@@ -8,7 +8,11 @@ import AddItem from "./AddItem";
 import ButtonAppBar from "./ButtonAppBar";
 import ItemDetail from "./ItemDetail";
 import ShoppingCart from "./ShoppingCart";
+<<<<<<< Updated upstream
 import Checkout from './Checkout';
+=======
+import SearchResults from "./SearchResults";
+>>>>>>> Stashed changes
 
 class App extends Component {
   constructor(props) {
@@ -53,7 +57,7 @@ class App extends Component {
   };
 
   renderShoppingCart = () => {
-    let title = "Shopping Cart"
+    let title = "Shopping Cart";
     if (this.props.isLogin === true) {
       title = this.props.username + "'s Shopping Cart";
     }
@@ -64,12 +68,17 @@ class App extends Component {
     return <ShoppingCart />;
   };
 
+<<<<<<< Updated upstream
   renderCheckout = () => {
     this.props.dispatch({
       type: "changePage",
       content: "Checkout"
     });
     return <Checkout />;
+=======
+  renderSearchResults = () => {
+    return <SearchResults />;
+>>>>>>> Stashed changes
   };
 
   render() {
@@ -96,8 +105,13 @@ class App extends Component {
           />
           <Route
             exact={true}
+<<<<<<< Updated upstream
             path="/checkout"
             render={this.renderCheckout}
+=======
+            path="/searchresults"
+            render={this.renderSearchResults}
+>>>>>>> Stashed changes
           />
         </div>
       </BrowserRouter>

@@ -86,8 +86,9 @@ class ButtonAppBar extends Component {
 
   searchClick = event => {
     event.preventDefault();
-    console.log("search", event.target.value);
-    let body = JSON.stringify({ search: event.target.value });
+    let search = event.target.value;
+    console.log("search", search);
+    let body = JSON.stringify({ search: search });
     fetch("http://localhost:4001/searchallitems", {
       method: "POST",
       body: body
@@ -96,7 +97,13 @@ class ButtonAppBar extends Component {
         return res.text();
       })
       .then(responseBody => {
-        console.log(JSON.parse(responseBody));
+        let body = JSON.parse(responseBody);
+        this.props.dispatch({
+          type: "search-results",
+          search: search,
+          results: body.items
+        });
+        this.props.history.push("/searchresults/");
       });
   };
 
