@@ -20,13 +20,10 @@ let reducer = function(state, action) {
       return { ...state, page: action.content };
     case "add-to-cart":
       return { ...state, cart: state.cart.concat(action.itemId) };
-<<<<<<< Updated upstream
-      case "empty-cart":
+    case "empty-cart":
       return { ...state, cart: [] };
-=======
     case "search-results":
       return { ...state, items: action.search };
->>>>>>> Stashed changes
     default:
       return state;
   }

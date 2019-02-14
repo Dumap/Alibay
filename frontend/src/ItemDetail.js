@@ -67,7 +67,7 @@ class ItemDetail extends Component {
                   Price: ${this.state.item.price}
                 </Typography>
                 <Typography variant="h6" align="left" paragraph>
-                  Seller: {this.state.item.seller}
+                  Seller: {this.state.item.seller}, {this.state.item.location}
                 </Typography>
               </CardContent>
             </CardActionArea>

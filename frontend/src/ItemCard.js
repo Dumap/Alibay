@@ -62,7 +62,7 @@ class ItemCard extends Component {
               className={this.props.classes.pos}
               color="textSecondary"
             >
-              Seller: {this.props.elem.seller}
+              Seller: {this.props.elem.seller}, {this.props.elem.location}
             </Typography>
           </CardContent>
         </CardActionArea>

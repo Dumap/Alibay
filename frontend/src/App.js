@@ -8,11 +8,7 @@ import AddItem from "./AddItem";
 import ButtonAppBar from "./ButtonAppBar";
 import ItemDetail from "./ItemDetail";
 import ShoppingCart from "./ShoppingCart";
-<<<<<<< Updated upstream
-import Checkout from './Checkout';
-=======
-import SearchResults from "./SearchResults";
->>>>>>> Stashed changes
+import Checkout from "./Checkout";
 
 class App extends Component {
   constructor(props) {
@@ -68,17 +64,12 @@ class App extends Component {
     return <ShoppingCart />;
   };
 
-<<<<<<< Updated upstream
   renderCheckout = () => {
     this.props.dispatch({
       type: "changePage",
       content: "Checkout"
     });
     return <Checkout />;
-=======
-  renderSearchResults = () => {
-    return <SearchResults />;
->>>>>>> Stashed changes
   };
 
   render() {
@@ -103,16 +94,7 @@ class App extends Component {
             path="/shoppingcart"
             render={this.renderShoppingCart}
           />
-          <Route
-            exact={true}
-<<<<<<< Updated upstream
-            path="/checkout"
-            render={this.renderCheckout}
-=======
-            path="/searchresults"
-            render={this.renderSearchResults}
->>>>>>> Stashed changes
-          />
+          <Route exact={true} path="/checkout" render={this.renderCheckout} />
         </div>
       </BrowserRouter>
     );
