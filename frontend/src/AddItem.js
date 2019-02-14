@@ -30,12 +30,12 @@ class AddItem extends Component {
     super(props);
     this.state = {
       seller: this.props.username,
-      location: "Montréal, Qc",
-      title: "This is an item",
+      location: "",
+      title: "",
       desc:
-        "Monkey is a common name that may refer to groups or species of mammals, in part, the simians of infraorder Simiiformes.",
-      price: 900,
-      img: "img.jpg"
+        "",
+      price: "",
+      img: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);

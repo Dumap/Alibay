@@ -16,7 +16,8 @@ const styles = theme => ({
   root: {
     backgroundColor: "#3d54b3",
     color: "#FFFFFF",
-    flexGrow: 1
+    flexGrow: 1,
+    borderRadius: 5
   },
   cart: {
     marginLeft: 5,
