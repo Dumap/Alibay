@@ -13,7 +13,8 @@ import compose from "recompose/compose";
 const styles = {
   card: {
     position: "relative",
-    maxWidth: 345
+    maxWidth: 345,
+    minWidth: 300
   },
   media: {
     // ⚠️ object-fit is not supported by IE 11.

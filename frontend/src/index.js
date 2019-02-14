@@ -20,6 +20,8 @@ let reducer = function(state, action) {
       return { ...state, page: action.content };
     case "add-to-cart":
       return { ...state, cart: state.cart.concat(action.itemId) };
+      case "empty-cart":
+      return { ...state, cart: [] };
     default:
       return state;
   }

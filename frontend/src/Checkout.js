@@ -72,6 +72,9 @@ class Checkout extends Component {
   }
 
   handleNext = () => {
+    if(this.state.activeStep + 1 === steps.length){
+        this.emptyCart();
+    }
     this.setState(state => ({
       activeStep: state.activeStep + 1,
     }));
@@ -87,6 +90,11 @@ class Checkout extends Component {
     this.setState({
       activeStep: 0,
     });
+  };
+
+  emptyCart = event => {
+    console.log("emptying cart")
+    this.props.dispatch({ type: "empty-cart"});
   };
 
   displayCheckout = () => {

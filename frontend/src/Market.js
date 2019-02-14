@@ -19,10 +19,10 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing.unit * 1,
-    margin: theme.spacing.unit * 1,
+    margin: theme.spacing.unit * 2,
     textAlign: "center",
     color: theme.palette.text.secondary,
-    minWidth: 275
+    minWidth: 310
   }
 });
 class Market extends Component {
